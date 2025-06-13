@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -32,10 +33,29 @@ public class fMahasiswa extends javax.swing.JFrame {
         dtm.addColumn("Prodi");
         
         lsDtMhs();
+        fieldEnabled(false);
+        tombol(false);
+        cHapus.setEnabled(true);
+        cTutup.setEnabled(true);
+                
+    }
+    private void fieldEnabled(boolean opsi){
+        txNIM.setEditable(opsi);
+        txNAMA.setEditable(opsi);
+        txJK.setEditable(opsi);
+        txPRODI.setEditable(opsi);
+            
+        }
         
+        private void tombol(boolean opsi){
+            cBaru.setEnabled(opsi);
+            cUbah.setEnabled(opsi);
+            cHapus.setEnabled(opsi);
+            cTutup.setEnabled(opsi);
+   
+        }
         
-        
-        
+        private void IsDtMhs() throws SQLException {
     }
     private void lsDtMhs() throws SQLException{
     Connection cnn = koneksi ();
@@ -77,6 +97,10 @@ public class fMahasiswa extends javax.swing.JFrame {
         txPRODI = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tmhs = new javax.swing.JTable();
+        cBaru = new javax.swing.JButton();
+        cUbah = new javax.swing.JButton();
+        cHapus = new javax.swing.JButton();
+        cTutup = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setFont(new java.awt.Font("Adobe Fan Heiti Std B", 0, 18)); // NOI18N
@@ -98,24 +122,28 @@ public class fMahasiswa extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI Semibold", 1, 18)); // NOI18N
         jLabel5.setText("Program Studi");
 
+        txNIM.setBackground(new java.awt.Color(255, 204, 153));
         txNIM.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txNIMActionPerformed(evt);
             }
         });
 
+        txNAMA.setBackground(new java.awt.Color(255, 204, 153));
         txNAMA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txNAMAActionPerformed(evt);
             }
         });
 
+        txJK.setBackground(new java.awt.Color(255, 204, 153));
         txJK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txJKActionPerformed(evt);
             }
         });
 
+        txPRODI.setBackground(new java.awt.Color(255, 204, 153));
         txPRODI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txPRODIActionPerformed(evt);
@@ -133,7 +161,38 @@ public class fMahasiswa extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tmhs.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tmhsMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tmhs);
+
+        cBaru.setBackground(new java.awt.Color(51, 204, 255));
+        cBaru.setFont(new java.awt.Font("Segoe UI Emoji", 0, 14)); // NOI18N
+        cBaru.setText("Baru");
+
+        cUbah.setBackground(new java.awt.Color(255, 51, 255));
+        cUbah.setFont(new java.awt.Font("Segoe UI Emoji", 0, 14)); // NOI18N
+        cUbah.setText("Ubah");
+        cUbah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cUbahActionPerformed(evt);
+            }
+        });
+
+        cHapus.setBackground(new java.awt.Color(255, 204, 204));
+        cHapus.setFont(new java.awt.Font("Segoe UI Emoji", 0, 14)); // NOI18N
+        cHapus.setText("Hapus");
+
+        cTutup.setBackground(new java.awt.Color(51, 255, 51));
+        cTutup.setFont(new java.awt.Font("Segoe UI Emoji", 0, 14)); // NOI18N
+        cTutup.setText("Tutup");
+        cTutup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cTutupActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -157,7 +216,15 @@ public class fMahasiswa extends javax.swing.JFrame {
                             .addComponent(jLabel4)
                             .addComponent(txJK, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5)
-                            .addComponent(txPRODI, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txPRODI, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cBaru)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cUbah)
+                                .addGap(9, 9, 9)
+                                .addComponent(cHapus)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cTutup)))
                         .addGap(73, 73, 73))))
         );
         layout.setVerticalGroup(
@@ -182,11 +249,17 @@ public class fMahasiswa extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txPRODI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txPRODI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cBaru, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cTutup, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cUbah, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addContainerGap(146, Short.MAX_VALUE))
         );
 
         pack();
@@ -207,6 +280,32 @@ public class fMahasiswa extends javax.swing.JFrame {
     private void txPRODIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txPRODIActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txPRODIActionPerformed
+
+    private void cUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cUbahActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cUbahActionPerformed
+
+    private void cTutupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cTutupActionPerformed
+      int opsi =JOptionPane.showOptionDialog(this,
+             "yakin akn menutup form?",
+             "konfirmasi tutup form?",
+             JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE,null,null,null);
+        
+      if (opsi == JOptionPane.YES_OPTION){  
+        System.exit(0);
+     }
+    }//GEN-LAST:event_cTutupActionPerformed
+
+    private void tmhsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tmhsMouseClicked
+        txNIM.setText(tmhs.getValueAt(tmhs.getSelectedRow(),  1 ).toString());
+        txNAMA.setText(tmhs.getValueAt(tmhs.getSelectedRow() , 0 ).toString());
+       String jkx = (tmhs.getValueAt(tmhs.getSelectedRow() , 2 ).toString().equals("L"))?"Laki-Laki":"Perempuan";
+        txJK.setText(jkx);
+        txPRODI.setText(tmhs.getValueAt(tmhs.getSelectedRow() , 3 ).toString());
+        cUbah.setEnabled(true);
+        cHapus.setEnabled(true);
+    }//GEN-LAST:event_tmhsMouseClicked
 
     /**
      * @param args the command line arguments
@@ -248,6 +347,10 @@ public class fMahasiswa extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton cBaru;
+    private javax.swing.JButton cHapus;
+    private javax.swing.JButton cTutup;
+    private javax.swing.JButton cUbah;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
