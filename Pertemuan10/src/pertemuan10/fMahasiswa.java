@@ -35,7 +35,7 @@ public class fMahasiswa extends javax.swing.JFrame {
         lsDtMhs();
         fieldEnabled(false);
         tombol(false);
-        cHapus.setEnabled(true);
+        cBaru.setEnabled(true);
         cTutup.setEnabled(true);
                 
     }
@@ -54,11 +54,21 @@ public class fMahasiswa extends javax.swing.JFrame {
             cTutup.setEnabled(opsi);
    
         }
-        
-        private void IsDtMhs() throws SQLException {
-    }
+        private void clearForm(){
+            txNIM.setText("");
+            txNAMA.setText("");
+            txPRODI.setText("");
+            txJK.setText("");
+            
+        }
+    
+    
     private void lsDtMhs() throws SQLException{
     Connection cnn = koneksi ();
+    
+    dtm.getDataVector().removeAllElements();
+    dtm.fireTableDataChanged();
+    
     
     if( !cnn.isClosed() ){
          PreparedStatement ps = cnn. prepareStatement("SELECT * FROM mhs;");
@@ -74,8 +84,44 @@ public class fMahasiswa extends javax.swing.JFrame {
            dtm.addRow(dta);
              
          }
-      }
-    
+         cnn.close();
+        
+    }
+    }
+private void storeData() throws SQLException{
+        Connection cnn = koneksi();
+        if(!cnn.isClosed()){
+            PreparedStatement ps = cnn.prepareStatement("INSERT INTO mhs(NIM,NAMA,PRODI,JKEL) VALUES(?,?,?,?);");
+            ps.setString(1, txNIM.getText());
+            ps.setString(2, txNAMA.getText());
+            ps.setString(3, txPRODI.getText());
+            ps.setString(4, txJK.getText());
+            ps.executeUpdate();
+            cnn.close();
+        }
+    }
+    private void updateData()throws SQLException{ 
+        Connection cnn = koneksi();
+        if(!cnn.isClosed()){
+            PreparedStatement ps = cnn.prepareStatement("UPDATE mhs SET NAMA=?,PRODI=?,JKEL=? WHERE NIM=?;");
+            ps.setString(1, txNAMA.getText());
+            ps.setString(2, txPRODI.getText());
+            ps.setString(3, txJK.getText());
+            ps.setString(4, txNIM.getText());
+            ps.executeUpdate();
+            cnn.close();
+        }
+        
+    }
+    private void destoryData()throws SQLException{
+        Connection cnn = koneksi();
+        if(!cnn.isClosed()){
+            PreparedStatement ps = cnn.prepareStatement("DELETE FROM mhs WHERE NIM=?;");
+            ps.setString(4, txNIM.getText());
+            ps.executeUpdate();
+            cnn.close();
+        }
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -171,6 +217,11 @@ public class fMahasiswa extends javax.swing.JFrame {
         cBaru.setBackground(new java.awt.Color(51, 204, 255));
         cBaru.setFont(new java.awt.Font("Segoe UI Emoji", 0, 14)); // NOI18N
         cBaru.setText("Baru");
+        cBaru.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cBaruActionPerformed(evt);
+            }
+        });
 
         cUbah.setBackground(new java.awt.Color(255, 51, 255));
         cUbah.setFont(new java.awt.Font("Segoe UI Emoji", 0, 14)); // NOI18N
@@ -306,6 +357,31 @@ public class fMahasiswa extends javax.swing.JFrame {
         cUbah.setEnabled(true);
         cHapus.setEnabled(true);
     }//GEN-LAST:event_tmhsMouseClicked
+
+    private void cBaruActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBaruActionPerformed
+      if(cBaru.getText().equals("Baru")){
+         cBaru.setText("simpan");
+         cTutup.setText("Batal");
+         cUbah.setEnabled(false);
+         cHapus.setEnabled(false);
+         clearForm();
+         fieldEnabled(true);
+      }else{
+          if(!txNIM.getText().equals("")){
+              try{
+                  storeData();
+                  lsDtMhs();
+              } catch (SQLException ex) {
+                  Logger.getLogger(fMahasiswa.class.getName()).log(Level.SEVERE, null, ex);
+             
+              }
+          }
+         cBaru.setText("Baru");
+         cTutup.setText("Tutup");
+         clearForm();
+         fieldEnabled(false);
+      }
+    }//GEN-LAST:event_cBaruActionPerformed
 
     /**
      * @param args the command line arguments
